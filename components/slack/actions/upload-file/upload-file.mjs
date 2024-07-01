@@ -1,12 +1,12 @@
 import { ConfigurationError } from "@pipedream/platform";
-import slack from "../../slack.app.mjs";
 import fs from "fs";
+import slack from "../../slack.app.mjs";
 
 export default {
   key: "slack-upload-file",
   name: "Upload File",
-  description: "Upload a file. [See docs here](https://api.slack.com/methods/files.upload)",
-  version: "0.0.16",
+  description: "Upload a file. [See the documentation](https://api.slack.com/methods/files.upload)",
+  version: "0.0.21",
   type: "action",
   props: {
     slack,
@@ -32,15 +32,17 @@ export default {
       optional: true,
     },
   },
-  async run() {
+  async run({ $ }) {
     if (!fs.existsSync(this.content)) {
       throw new ConfigurationError(`\`${this.content}\` not found, is needed a valid \`/tmp\` path`);
     }
 
-    return await this.slack.sdk().files.upload({
+    const response = await this.slack.sdk().files.upload({
       file: fs.createReadStream(this.content),
       channels: this.conversation,
       initial_comment: this.initialComment,
     });
+    $.export("$summary", "Successfully uploaded file");
+    return response;
   },
 };

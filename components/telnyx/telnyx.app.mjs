@@ -10,7 +10,7 @@ export default {
       description: "The Id of the messaging profile to use for sending the message.",
       async options({ page }) {
         const params = {
-          "page[number]": page || 1,
+          "page[number]": page + 1,
         };
         const profiles = await this.getMessagingProfiles({
           params,
@@ -21,12 +21,61 @@ export default {
         }));
       },
     },
+    phoneNumber: {
+      type: "string",
+      label: "Phone Number",
+      description: "The phone number to send the message from.",
+      async options({ page }) {
+        const params = {
+          "page[number]": page + 1,
+        };
+        const phoneNumbers = await this.getPhoneNumbers({
+          params,
+        });
+        return phoneNumbers.data.map((phoneNumber) => ({
+          label: phoneNumber.phone_number,
+          value: phoneNumber.phone_number,
+        }));
+      },
+    },
+    faxAppId: {
+      type: "string",
+      label: "Fax Application ID",
+      description: "The connection/application ID to send the fax with.",
+      async options({ page }) {
+        const { data } = await this.listFaxApplications({
+          params: {
+            "page[number]": page + 1,
+          },
+        });
+        return data?.map(({
+          id: value, application_name: label,
+        }) => ({
+          value,
+          label,
+        })) || [];
+      },
+    },
+    callControlAppId: {
+      type: "string",
+      label: "Call Control Application ID",
+      description: "The ID of the Call Control App to be used when dialing the destination.",
+      async options({ page }) {
+        const { data } = await this.listCallControlApplications({
+          params: {
+            "page[number]": page + 1,
+          },
+        });
+        return data?.map(({
+          id: value, application_name: label,
+        }) => ({
+          value,
+          label,
+        })) || [];
+      },
+    },
   },
   methods: {
-    // this.$auth contains connected account data
-    authKeys() {
-      console.log(Object.keys(this.$auth));
-    },
     getHeaders() {
       return {
         "Content-Type": "application/json",
@@ -56,20 +105,100 @@ export default {
     },
     throwFormattedError(error) {
       error = error.response;
-      throw new Error(`${error.status} - ${error.statusText} - ${error.data.message}`);
+      throw new Error(`${error.status} - ${error.statusText} - ${error.data.errors[0].detail}`);
     },
-    async sendMessage(args) {
+    sendMessage(args = {}) {
       return this.makeRequest({
         method: "POST",
         path: "/messages",
         ...args,
       });
     },
-    async getMessagingProfiles(args) {
+    getMessagingProfiles(args = {}) {
       return this.makeRequest({
         path: "/messaging_profiles",
         ...args,
       });
+    },
+    getPhoneNumbers(args = {}) {
+      return this.makeRequest({
+        path: "/phone_numbers",
+        ...args,
+      });
+    },
+    listFaxApplications(args = {}) {
+      return this.makeRequest({
+        path: "/fax_applications",
+        ...args,
+      });
+    },
+    listCallControlApplications(args = {}) {
+      return this.makeRequest({
+        path: "/call_control_applications",
+        ...args,
+      });
+    },
+    listWebhookDeliveries(args = {}) {
+      return this.makeRequest({
+        path: "/webhook_deliveries",
+        ...args,
+      });
+    },
+    getMessage({
+      id, ...args
+    }) {
+      return this.makeRequest({
+        path: `/messages/${id}`,
+        ...args,
+      });
+    },
+    sendGroupMessage(args = {}) {
+      return this.makeRequest({
+        method: "POST",
+        path: "/messages/group_mms",
+        ...args,
+      });
+    },
+    sendFax(args = {}) {
+      return this.makeRequest({
+        method: "POST",
+        path: "/faxes",
+        ...args,
+      });
+    },
+    dialNumber(args = {}) {
+      return this.makeRequest({
+        method: "POST",
+        path: "/calls",
+        ...args,
+      });
+    },
+    async *paginate({
+      resourceFn,
+      params = {},
+      max,
+    }) {
+      params = {
+        ...params,
+        "page[number]": 1,
+      };
+      let hasMore, count = 0;
+      do {
+        const {
+          data, meta,
+        } = await resourceFn({
+          params,
+        });
+        for (const item of data) {
+          yield item;
+          count++;
+          if (count >= max) {
+            return;
+          }
+        }
+        params["page[number]"] += 1;
+        hasMore = count < meta.total_results;
+      } while (hasMore);
     },
   },
 };
