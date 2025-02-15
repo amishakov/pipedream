@@ -774,8 +774,7 @@ importers:
         specifier: ^2.3.3
         version: 2.3.3
 
-  components/applicantstack:
-    specifiers: {}
+  components/applicantstack: {}
 
   components/appointedd:
     dependencies:
@@ -996,7 +995,14 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1
 
-  components/axesso_data_service: {}
+  components/axesso_data_service:
+    dependencies:
+      '@pipedream/platform':
+        specifier: ^3.0.3
+        version: 3.0.3
+      bottleneck:
+        specifier: ^2.19.5
+        version: 2.19.5
 
   components/axis_lms: {}
 
@@ -1133,6 +1139,8 @@ importers:
       '@pipedream/types':
         specifier: ^0.1.4
         version: 0.1.6
+
+  components/benchmarkone: {}
 
   components/better_stack:
     dependencies:
@@ -3606,8 +3614,7 @@ importers:
         specifier: ^1.2.0
         version: 1.6.6
 
-  components/felt:
-    specifiers: {}
+  components/felt: {}
 
   components/fibery:
     dependencies:
@@ -4489,7 +4496,11 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3
 
-  components/google_maps_platform: {}
+  components/google_maps_platform:
+    dependencies:
+      '@pipedream/platform':
+        specifier: ^3.0.3
+        version: 3.0.3
 
   components/google_meet:
     dependencies:
@@ -5837,6 +5848,8 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3
 
+  components/langfuse: {}
+
   components/laposta:
     dependencies:
       '@pipedream/platform':
@@ -5929,7 +5942,11 @@ importers:
 
   components/lessaccounting: {}
 
-  components/lessonspace: {}
+  components/lessonspace:
+    dependencies:
+      '@pipedream/platform':
+        specifier: ^3.0.3
+        version: 3.0.3
 
   components/letterdrop:
     dependencies:
@@ -7578,6 +7595,8 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3
 
+  components/ory: {}
+
   components/osu: {}
 
   components/otter_waiver:
@@ -8708,6 +8727,8 @@ importers:
         specifier: ^1.2.0
         version: 1.6.6
 
+  components/real_id: {}
+
   components/realgeeks:
     dependencies:
       '@pipedream/platform':
@@ -8787,6 +8808,8 @@ importers:
 
   components/redmine: {}
 
+  components/referral_rocket: {}
+
   components/referralhero:
     dependencies:
       '@pipedream/platform':
@@ -8863,6 +8886,8 @@ importers:
       '@pipedream/platform':
         specifier: ^1.5.1
         version: 1.6.6
+
+  components/relintex_crm: {}
 
   components/remarkety: {}
 
@@ -10358,6 +10383,8 @@ importers:
         specifier: ^4.17.20
         version: 4.17.21
 
+  components/stack_overflow_for_teams: {}
+
   components/stackshare_api: {}
 
   components/stammer_ai:
@@ -10435,6 +10462,12 @@ importers:
       '@pipedream/platform':
         specifier: ^1.1.1
         version: 1.6.6
+
+  components/streamlabs:
+    dependencies:
+      '@pipedream/platform':
+        specifier: ^3.0.3
+        version: 3.0.3
 
   components/streamtime:
     dependencies:
@@ -11915,7 +11948,11 @@ importers:
         specifier: ^1.4.1
         version: 1.6.6
 
-  components/webscraping_ai: {}
+  components/webscraping_ai:
+    dependencies:
+      '@pipedream/platform':
+        specifier: ^3.0.3
+        version: 3.0.3
 
   components/webvizio:
     dependencies:
@@ -12399,8 +12436,7 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3
 
-  components/zep:
-    specifiers: {}
+  components/zep: {}
 
   components/zerobounce:
     dependencies:
